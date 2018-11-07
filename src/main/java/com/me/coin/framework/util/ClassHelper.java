@@ -20,9 +20,9 @@ public class ClassHelper {
 	 * @param inter
 	 * @return
 	 */
-	public static List<Class<?>> getpackClsimplinterface(String packname, Class<?> inter) {
+	public static List<Class<?>> findClassImplInterface(String packname, Class<?> inter) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
-		List<Class<?>> clses = getClasses(packname);
+		List<Class<?>> clses = findClassBypackageName(packname);
 		for (Class<?> cls : clses) {
 			if (inter.isAssignableFrom(cls)) {
 				if (!inter.equals(cls)) {
@@ -39,7 +39,7 @@ public class ClassHelper {
 	 * @param packageName
 	 * @return
 	 */
-	public static List<Class<?>> getClasses(String packageName) {
+	public static List<Class<?>> findClassBypackageName(String packageName) {
 		// 第一个class类的集合
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		// 是否循环迭代
