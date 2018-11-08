@@ -111,6 +111,20 @@ public class ClassHelper {
 		}
 		return classes;
 	}
+	
+	
+	/**
+	 * 获取多个包名下所有class
+	 * @param packageName
+	 * @return
+	 */
+	public static List<Class<?>> findClassBypackageName(String... packageName) {
+		List<Class<?>> classes = new ArrayList<>();
+		for(String pgName:packageName){
+			classes.addAll(findClassBypackageName(pgName));
+		}
+		return classes;
+	}
 
 	/**
 	 * 以文件的形式来获取包下的所有Class
