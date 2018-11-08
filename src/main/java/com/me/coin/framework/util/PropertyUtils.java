@@ -2,8 +2,6 @@ package com.me.coin.framework.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 import org.slf4j.Logger;

@@ -1,9 +1,13 @@
 package com.me.coin.framework.ioc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
+
+import com.me.coin.framework.ioc.annotation.IocBean;
+import com.me.coin.framework.util.Strings;
 
 /**
  * 存放所有bean的容器
@@ -13,45 +17,48 @@ import java.util.Set;
 public class CoinIocCache {
 	
 	//存放所有的bean
-	private Map<Class<?>, Object> cache = new HashMap<Class<?>, Object>();
-	
-	//标识所有已经注入的class
-	private Set<Class<?>> isInject = new HashSet<Class<?>>();
+	private Map<Class<?>, CoinBean> cache = new HashMap<Class<?>, CoinBean>();
 	
 	
-	public boolean isInject(Class<?> clazz){
-		return isInject.contains(clazz);
-	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public <T> T setInject(Class<?> clazz){
+	public void addCoinBean(Class<?> clazz){
 		try {
-			cache.put(clazz, clazz.newInstance());
-			isInject.add(clazz);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return (T) cache.get(clazz);
-	}
-	
-	
-	public void addClass(Class<?> clazz){
-		try {
-			cache.put(clazz, clazz.newInstance());
+			IocBean iocBean = clazz.getAnnotation(IocBean.class);
+			String name = iocBean.value();
+			if(Strings.isEmpty(name))
+				name = Strings.lowerFirst(clazz.getSimpleName());
+			cache.put(clazz, new CoinBean(name, clazz.newInstance()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
 	
-	public boolean hasBean(Class<?> clazz){
+	public boolean hasCoinBean(Class<?> clazz){
 		return cache.containsKey(clazz);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public <T> T getBean(Class<?> clazz){
-		return (T) cache.get(clazz);
+	
+	public CoinBean getCoinBean(Class<?> clazz){
+		return cache.get(clazz);
 	}
+	
+	
+	/**
+	 * 根据接口获取所有实现类
+	 * @param clazz
+	 * @return
+	 */
+	public List<Class<?>> getInterfaceImpl(Class<?> clazz){
+		List<Class<?>> classes = new ArrayList<>();
+		cache.forEach((k,v)->{
+			if(clazz.isAssignableFrom(k))
+				classes.add(k);
+		});
+		return classes;
+	}
+	
+	
+	
+	
 
 }
