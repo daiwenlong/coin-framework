@@ -13,5 +13,11 @@ public class Constants {
 	public static final String IOC_PACKAGE = "coinioc_package";
 	
 	
+	/**
+	 * 控制层包名
+	 */
+	public static final String ACT_PACJAGE = "coinact_package";
+	
+	
 	
 }
