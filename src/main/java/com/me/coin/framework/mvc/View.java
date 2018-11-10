@@ -7,7 +7,7 @@ package com.me.coin.framework.mvc;
  */
 public enum View {
 	
-	Json("json"),jsp("jsp");
+	Json("json"),Jsp("jsp");
 	
 	
 	private String name;
