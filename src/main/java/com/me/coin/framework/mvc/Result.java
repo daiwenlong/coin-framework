@@ -13,17 +13,17 @@ public class Result {
 	
 	private View view;
 	
-	private String jspPath;
+	private String path;
 	
 	public Result(Map<String, Object> data,View view){
 		this.data = data;
 		this.view = view;
 	}
 	
-	public Result(Map<String, Object> data,View view,String jspPath){
+	public Result(Map<String, Object> data,View view,String path){
 		this.data = data;
 		this.view = view;
-		this.jspPath = jspPath;
+		this.path = path;
 	}
 
 	public Map<String, Object> getData() {
@@ -42,12 +42,12 @@ public class Result {
 		this.view = view;
 	}
 
-	public String getJspPath() {
-		return jspPath;
+	public String getpath() {
+		return path;
 	}
 
-	public void setJspPath(String jspPath) {
-		this.jspPath = jspPath;
+	public void setpath(String path) {
+		this.path = path;
 	}
 	
 	

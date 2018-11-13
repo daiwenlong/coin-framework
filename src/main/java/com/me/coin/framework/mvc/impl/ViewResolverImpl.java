@@ -1,5 +1,6 @@
 package com.me.coin.framework.mvc.impl;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ public class ViewResolverImpl implements ViewResolver {
 	@Override
 	public void resolveView(HttpServletRequest request, HttpServletResponse response, Result result) {
 		View view = result.getView();
-		if ("json".equals(view.getName())) {
+		if("json".equals(view.getType())) {
 			try {
 				// 指定内容类型为 JSON 格式
 				response.setContentType("application/json"); 
@@ -31,17 +32,23 @@ public class ViewResolverImpl implements ViewResolver {
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-		}else{
+		}else if("jsp".equals(view.getType())){
 			try {
 				//传递数据
 				result.getData().forEach((k,v)->{
 					request.setAttribute(k, v);
 				});
 				String pathPrefix = PropertyUtils.getProperty(Constants.JSP_PATH, "/WEB-INF/jsp/");
-				request.getRequestDispatcher(pathPrefix+result.getJspPath()).forward(request, response);
+				request.getRequestDispatcher(pathPrefix+result.getpath()).forward(request, response);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			} 
+		}else{
+			try {
+				response.sendRedirect(request.getContextPath()+result.getpath());
+			} catch (IOException e) {
+				throw new RuntimeException("重定向失败");
+			}
 		}
 
 	}
