@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * 条件
+ * 查询条件
  * @author dwl
  *
  */
