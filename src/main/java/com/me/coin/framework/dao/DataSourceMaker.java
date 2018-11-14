@@ -12,10 +12,10 @@ import com.me.coin.framework.util.PropertyUtils;
  */
 public class DataSourceMaker {
 	
-	private static final String DRIVER ="jdbc.driver";
-	private static final String JDBC_URL ="jdbc.url";
-	private static final String NAME ="jdbc.username";
-	private static final String PASSWORD ="jdbc.password";
+	private static final String DRIVER = PropertyUtils.getProperty("jdbc.driver");
+	private static final String JDBC_URL = PropertyUtils.getProperty("jdbc.url");
+	private static final String NAME = PropertyUtils.getProperty("jdbc.username");
+	private static final String PASSWORD = PropertyUtils.getProperty("jdbc.password");
 	
 	private static int INIT_SIZE = Integer.parseInt(PropertyUtils.getProperty("jdbc.initialSize", "10"));
 	private static int MAX_IDLE = Integer.parseInt(PropertyUtils.getProperty("jdbc.maxIdle", "10"));
@@ -29,7 +29,7 @@ public class DataSourceMaker {
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setDriverClassName(DRIVER);
 		dataSource.setUrl(JDBC_URL);
-		dataSource.setName(NAME);
+		dataSource.setUsername(NAME);
 		dataSource.setPassword(PASSWORD);
 		//初始化连接
 		dataSource.setInitialSize(INIT_SIZE);
