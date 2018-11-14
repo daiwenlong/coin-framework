@@ -11,7 +11,7 @@ public class Entity {
 	
 	private String tableName;
 	
-	private Object id;
+	private EntityField id;
 	
 	private List<EntityField> entityFields;
 
@@ -22,12 +22,13 @@ public class Entity {
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
 	}
+    
 
-	public Object getId() {
+	public EntityField getId() {
 		return id;
 	}
 
-	public void setId(Object id) {
+	public void setId(EntityField id) {
 		this.id = id;
 	}
 

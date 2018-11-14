@@ -1,6 +1,5 @@
 package com.me.coin.framework.orm;
 
-import java.lang.reflect.Field;
 
 /**
  * 字段映射信息
@@ -9,36 +8,33 @@ import java.lang.reflect.Field;
  */
 public class EntityField {
 	
-	private Field field;
+	private String field;
 	
-	private Object value;
+	private String column;
 	
 	public EntityField(){
 		
 	}
 	
-	public EntityField(Field field, Object value) {
+	public EntityField(String field, String column) {
 		this.field = field;
-		this.value = value;
+		this.column = column;
 	}
 
-	public Field getField() {
+	public String getField() {
 		return field;
 	}
 
-	public void setField(Field field) {
+	public void setField(String field) {
 		this.field = field;
 	}
 
-	public Object getValue() {
-		return value;
+	public String getColumn() {
+		return column;
 	}
 
-	public void setValue(Object value) {
-		this.value = value;
+	public void setColumn(String column) {
+		this.column = column;
 	}
-	
-	
-	
 
 }
