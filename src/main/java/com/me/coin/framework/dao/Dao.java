@@ -16,7 +16,7 @@ public interface Dao {
 	 * @param obj
 	 * @return
 	 */
-	Object insert(Object obj);
+	int insert(Object obj);
 	
 	/**
 	 * 更新
@@ -81,6 +81,23 @@ public interface Dao {
 	 * @return
 	 */
 	int delete(Class<?> clazz,Cnd cnd);
+	
+	/**
+	 * 删除
+	 * @param obj
+	 * @return
+	 */
+	int delete(Object obj);
+	
+	/**
+	 * 查询数量
+	 * @param clazz
+	 * @param cnd
+	 * @return
+	 */
+	long count(Class<?> clazz,Cnd cnd);
+	
+	
 	
 
 }
