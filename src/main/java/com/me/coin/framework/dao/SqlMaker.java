@@ -71,7 +71,7 @@ public class SqlMaker {
 		Class<?> clazz = obj.getClass();
 		EntityField field = EntityHelper.getId(clazz);
 		return getDeleteSql(clazz, Cnd.where()
-				.and(field.getColumn(), "=", getFieldValue(obj, field).toString()));
+				.and(field.getColumn(), "=", getFieldValue(obj, field)));
 	}
 	
 	/**

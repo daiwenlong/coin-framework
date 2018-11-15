@@ -25,14 +25,14 @@ public class Cnd {
 	}
 	
 	
-	public Cnd and(String column,String op,String value){
+	public Cnd and(String column,String op,Object value){
 		this.cnds.add(new Condition(column, op, Op.And));
 		this.params.add(value);
 		return this;
 	}
 	
 	
-	public Cnd or(String column,String op,String value){
+	public Cnd or(String column,String op,Object value){
 		this.cnds.add(new Condition(column, op, Op.Or));
 		this.params.add(value);
 		return this;
