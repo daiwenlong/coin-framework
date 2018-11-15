@@ -124,7 +124,8 @@ public class SqlMaker {
 		Object value = null;
 		try {
 			pd = new PropertyDescriptor(field.getField(),obj.getClass());
-			Method getMethod = pd.getReadMethod();  
+			Method getMethod = pd.getReadMethod();
+			getMethod.setAccessible(true);//传说能提高性能
 			value = getMethod.invoke(obj);
 		} catch (Exception e) {
 			e.printStackTrace();
