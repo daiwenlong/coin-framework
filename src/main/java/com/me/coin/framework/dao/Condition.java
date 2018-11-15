@@ -11,14 +11,11 @@ public class Condition {
 	
 	private String op;
 	
-	private String value;
-	
 	private Op type;
 	
-	public Condition(String column, String op, String value, Op type) {
+	public Condition(String column, String op, Op type) {
 		this.column = column;
 		this.op = op;
-		this.value = value;
 		this.type = type;
 	}
 
@@ -40,16 +37,6 @@ public class Condition {
 
 	public void setOp(String op) {
 		this.op = op;
-	}
-
-
-	public String getValue() {
-		return value;
-	}
-
-
-	public void setValue(String value) {
-		this.value = value;
 	}
 
 

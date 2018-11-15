@@ -16,6 +16,8 @@ public class Cnd {
 	
 	private List<String> orders = new ArrayList<>();
 	
+	private List<Object> params = new ArrayList<>();
+	
 	private Cnd (){}
 	
 	public static Cnd where(){
@@ -24,13 +26,15 @@ public class Cnd {
 	
 	
 	public Cnd and(String column,String op,String value){
-		this.cnds.add(new Condition(column, op, value,Op.And));
+		this.cnds.add(new Condition(column, op, Op.And));
+		this.params.add(value);
 		return this;
 	}
 	
 	
 	public Cnd or(String column,String op,String value){
-		this.cnds.add(new Condition(column, op, value,Op.Or));
+		this.cnds.add(new Condition(column, op, Op.Or));
+		this.params.add(value);
 		return this;
 	}
 	
@@ -41,19 +45,17 @@ public class Cnd {
 	}
 	
 	
-	public String getWhereSql(){
+	public Sql getSql(){
 		StringBuilder where = new StringBuilder(" where ");
 		for(int i=0;i<cnds.size();i++){
 			if(i==0){
 				if(cnds.get(i).getType().getType().equals("or"))
 					throw new SqlAppendException("or不能作为第一个条件");
-				where.append(cnds.get(i).getColumn()).append(cnds.get(i).getOp())
-				     .append("'").append(cnds.get(i).getValue()).append("'");
+				where.append(cnds.get(i).getColumn()).append(cnds.get(i).getOp()).append(" ?");
 			}else{
 				String op = cnds.get(i).getType().getType();
 				where.append(" ").append(op).append(" ").append(cnds.get(i).getColumn())
-				     .append(cnds.get(i).getOp()).append("'").append(cnds.get(i)
-				     .getValue()).append("'");
+				     .append(cnds.get(i).getOp()).append(" ?");
 			}
 		}
 		for(int i=0;i<orders.size();i++){
@@ -62,7 +64,7 @@ public class Cnd {
 			else
 				where.append(",").append(orders.get(i));
 		}
-		return where.toString();
+		return new Sql(where.toString(),this.params);
 	}
 	
 	
