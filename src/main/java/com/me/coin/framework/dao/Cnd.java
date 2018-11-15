@@ -46,12 +46,12 @@ public class Cnd {
 	
 	
 	public Sql getSql(){
-		StringBuilder where = new StringBuilder(" where ");
+		StringBuilder where = new StringBuilder();
 		for(int i=0;i<cnds.size();i++){
 			if(i==0){
 				if(cnds.get(i).getType().getType().equals("or"))
 					throw new SqlAppendException("or不能作为第一个条件");
-				where.append(cnds.get(i).getColumn()).append(cnds.get(i).getOp()).append(" ?");
+				where.append(" where ").append(cnds.get(i).getColumn()).append(cnds.get(i).getOp()).append(" ?");
 			}else{
 				String op = cnds.get(i).getType().getType();
 				where.append(" ").append(op).append(" ").append(cnds.get(i).getColumn())

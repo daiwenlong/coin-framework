@@ -19,16 +19,34 @@ public class SqlMaker {
 	/**
 	 * 获取查询sql
 	 * @param clazz
-	 * @param cnd
+	 * @param cnd 条件
 	 * @param pager
 	 * @return
 	 */
-	public Sql getQuerySql(Class<?> clazz,Cnd cnd,Pager pager){
+	public Sql getSelectSql(Class<?> clazz,Cnd cnd,Pager pager){
 		StringBuilder sql = new StringBuilder("select * from ");
 		sql.append(EntityHelper.getTableName(clazz));
 		Sql where = cnd.getSql();
 		sql.append(where.getValue());
-		return new Sql(sql.toString(),where.getParams());
+		if(null == pager)
+			return new Sql(sql.toString(),where.getParams());
+		long start = (pager.getPageNum()-1)*pager.getPageSize();
+		where.getParams().add(start);
+		where.getParams().add(pager.getPageSize());
+		sql.append(" limit ?,?");
+		return new Sql(sql.toString(), where.getParams());
+	}
+	
+	
+	/**
+	 * 获取查询sql
+	 * @param clazz
+	 * @param pk 主键
+	 * @return
+	 */
+	public Sql getSelectSql(Class<?> clazz,Object pk){
+		EntityField field = EntityHelper.getId(clazz);
+		return getSelectSql(clazz, Cnd.where().and(field.getColumn(), "=", pk), null);
 	}
 	
 	
@@ -74,8 +92,22 @@ public class SqlMaker {
 				.and(field.getColumn(), "=", getFieldValue(obj, field)));
 	}
 	
+	
+	
 	/**
-	 * 获取删除sql
+	 * 按主键删除
+	 * @param clazz
+	 * @param pk
+	 * @return
+	 */
+	public Sql getDeleteSql(Class<?> clazz,Object pk){
+		EntityField field = EntityHelper.getId(clazz);
+		return getDeleteSql(clazz, Cnd.where()
+				.and(field.getColumn(), "=", pk));
+	}
+	
+	/**
+	 * 按条件删除
 	 * @param clazz
 	 * @param cnd
 	 * @return
@@ -110,6 +142,20 @@ public class SqlMaker {
 		sql.append(" where ").append(EntityHelper.getId(clazz).getColumn()).append("= ?");
 		params.add(getFieldValue(obj, EntityHelper.getId(clazz)));
 		return new Sql(sql.toString(),params);
+	}
+	
+	/**
+	 * 获取count sql
+	 * @param clazz
+	 * @param cnd
+	 * @return
+	 */
+	public Sql getCountSql(Class<?> clazz,Cnd cnd){
+		StringBuilder sql = new StringBuilder("select count(1) from ");
+		sql.append(EntityHelper.getTableName(clazz));
+	    Sql where = cnd.getSql();
+		sql.append(where.getValue());
+		return new Sql(sql.toString(), where.getParams());
 	}
 	
 	
