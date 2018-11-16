@@ -83,7 +83,7 @@ public class CoinDao implements Dao{
 	}
 
 	@Override
-	public <T> T fetch(Class<T> clazz, Integer id) {
+	public <T> T fetch(Class<T> clazz, long id) {
 		Sql sql = sqlMaker.getSelectSql(clazz, id);
 		T result = null;
 		try {
@@ -109,7 +109,7 @@ public class CoinDao implements Dao{
 	}
 
 	@Override
-	public int delete(Class<?> clazz, Integer id) {
+	public int delete(Class<?> clazz, long id) {
 		Sql sql = sqlMaker.getDeleteSql(clazz, id);
 		int result = 0;
 		try {

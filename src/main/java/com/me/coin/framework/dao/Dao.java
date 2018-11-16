@@ -48,7 +48,7 @@ public interface Dao {
 	 * @param id
 	 * @return
 	 */
-	<T> T fetch(Class<T> clazz,Integer id);
+	<T> T fetch(Class<T> clazz,long id);
 	
 	/**
 	 * 按住键查询一条
@@ -64,7 +64,7 @@ public interface Dao {
 	 * @param id
 	 * @return
 	 */
-	int delete(Class<?> clazz,Integer id);
+	int delete(Class<?> clazz,long id);
 	
 	/**
 	 * 按主键删除
