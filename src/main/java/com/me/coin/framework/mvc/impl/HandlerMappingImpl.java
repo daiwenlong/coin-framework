@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.me.coin.framework.Constants;
 import com.me.coin.framework.mvc.ActionHandler;
 import com.me.coin.framework.mvc.HandlerMapping;
+import com.me.coin.framework.mvc.NotFoundActionException;
 import com.me.coin.framework.mvc.annotation.Act;
 import com.me.coin.framework.mvc.annotation.Request;
 import com.me.coin.framework.util.ClassHelper;
@@ -51,6 +52,8 @@ public class HandlerMappingImpl implements HandlerMapping{
 		String path = request.getServletPath() + request.getPathInfo();
 		if(path.endsWith("/"))
 			path = path.substring(0, path.length() - 1);
+		if(!actMap.containsKey(path))
+			throw new NotFoundActionException(String.format("找不到处理该路径的action：'%s'", path));
 		return actMap.get(path);
 	}
 
