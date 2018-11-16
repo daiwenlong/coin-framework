@@ -9,21 +9,21 @@ import java.lang.reflect.Method;
  */
 public class ActionHandler {
 	
-	private Class<?> ActClazz;
+	private Class<?> actClazz;
 	
 	private Method method;
 	
 	public ActionHandler(Class<?> clazz ,Method method){
-		this.ActClazz = clazz;
+		this.actClazz = clazz;
 		this.method = method;
 	}
 
 	public Class<?> getActClazz() {
-		return ActClazz;
+		return actClazz;
 	}
 
 	public void setActClazz(Class<?> actClazz) {
-		ActClazz = actClazz;
+		this.actClazz = actClazz;
 	}
 
 	public Method getMethod() {
