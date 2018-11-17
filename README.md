@@ -84,39 +84,39 @@ dao在项目启动时已交给ioc管理
 
 使用@Inject即可使用
 ```java
-    @Inject//注入
-	private Dao dao;
+@Inject//注入
+private Dao dao;
 ```
 
 * 查询
 ```java
-    //获取所有用户 -select * from T_USER
-	List<User> list = dao.query(User.class, Cnd.where());
-	//获取用户 分页 -select * from T_USER limit 0,10
-	List<User> list2 = dao.query(User.class, Cnd.where(),new Pager());
-	//获取用户 -select * from T_USER where age = 16
-	List<User> list3 = dao.query(User.class, Cnd.where().and("age", "=", 16));
-	//获取用户 -select * from T_USER where id = 1
-	User user = dao.fetch(User.class, 1);
+//获取所有用户 -select * from T_USER
+List<User> list = dao.query(User.class, Cnd.where());
+//获取用户 分页 -select * from T_USER limit 0,10
+List<User> list2 = dao.query(User.class, Cnd.where(),new Pager());
+//获取用户 -select * from T_USER where age = 16
+List<User> list3 = dao.query(User.class, Cnd.where().and("age", "=", 16));
+//获取用户 -select * from T_USER where id = 1
+User user = dao.fetch(User.class, 1);
 ```
 * 新增
 ```java
-    dao.insert(user); 
+dao.insert(user); 
 ```
 * 删除
 ```java
-    dao.delete(user);//删除对象
-	dao.delete(User.class,1);//按主键删除
-	dao.delete(User.class, Cnd.where().and("name", "=", "dwl"));//按条件删除
+dao.delete(user);//删除对象
+dao.delete(User.class,1);//按主键删除
+dao.delete(User.class, Cnd.where().and("name", "=", "dwl"));//按条件删除
 ```
 * 更新
 ```java
-    dao.update(user);
+dao.update(user);
 ```
 * 统计
 ```java
-    int count = dao.count(User.class, Cnd.where());//统计全表
-	int count dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件统计
+int count = dao.count(User.class, Cnd.where());//统计全表
+int count dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件统计
 ```
 
 ### 依赖注入
