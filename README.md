@@ -51,6 +51,8 @@ public class User {
 	
 	@Column("name")
 	private String name;
+	
+	//getter/setter省略
 }
 ```
 
@@ -122,4 +124,13 @@ int count dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件统�
 ### 依赖注入
 
 使用@IocBean标记的类将交给ioc管理，由ioc负责创建和注入。
+
+### 事务管理
+
+...
+
+### 切面编程
+
+...
+
 
