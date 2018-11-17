@@ -9,6 +9,8 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.me.coin.framework.dao.Cnd;
 import com.me.coin.framework.dao.Dao;
@@ -20,6 +22,7 @@ import com.me.coin.framework.orm.EntityHelper;
 
 public class CoinDao implements Dao{
 	
+	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private SqlMaker sqlMaker;
 	
@@ -35,6 +38,7 @@ public class CoinDao implements Dao{
 	@Override
 	public int insert(Object obj) {
 		Sql sql = sqlMaker.getInsertSql(obj);
+		printSql(sql);
 		int result = 0;
 		try {
 			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
@@ -47,6 +51,7 @@ public class CoinDao implements Dao{
 	@Override
 	public int update(Object obj) {
 		Sql sql = sqlMaker.getUpdateSql(obj);
+		printSql(sql);
 		int result = 0;
 		try {
 			result = queryRunner.update(sql.getValue(), sql.getParams().toArray());
@@ -59,6 +64,7 @@ public class CoinDao implements Dao{
 	@Override
 	public <T> List<T> query(Class<T> clazz, Cnd cnd) {
 		Sql sql = sqlMaker.getSelectSql(clazz, cnd, null);
+		printSql(sql);
 		List<T> list = null;
 		try {
 			list = queryRunner.query(sql.getValue(), new BeanListHandler<T>(clazz,
@@ -72,6 +78,7 @@ public class CoinDao implements Dao{
 	@Override
 	public <T> List<T> query(Class<T> clazz, Cnd cnd, Pager pager) {
 		Sql sql = sqlMaker.getSelectSql(clazz, cnd, pager);
+		printSql(sql);
 		List<T> list = null;
 		try {
 			list = queryRunner.query(sql.getValue(), new BeanListHandler<T>(clazz,
@@ -85,6 +92,7 @@ public class CoinDao implements Dao{
 	@Override
 	public <T> T fetch(Class<T> clazz, long id) {
 		Sql sql = sqlMaker.getSelectSql(clazz, id);
+		printSql(sql);
 		T result = null;
 		try {
 			result = queryRunner.query(sql.getValue(), new BeanHandler<T>(clazz,
@@ -98,6 +106,7 @@ public class CoinDao implements Dao{
 	@Override
 	public <T> T fetch(Class<T> clazz, String id) {
 		Sql sql = sqlMaker.getSelectSql(clazz, id);
+		printSql(sql);
 		T result = null;
 		try {
 			result = queryRunner.query(sql.getValue(), new BeanHandler<T>(clazz,
@@ -111,6 +120,7 @@ public class CoinDao implements Dao{
 	@Override
 	public int delete(Class<?> clazz, long id) {
 		Sql sql = sqlMaker.getDeleteSql(clazz, id);
+		printSql(sql);
 		int result = 0;
 		try {
 			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
@@ -123,6 +133,7 @@ public class CoinDao implements Dao{
 	@Override
 	public int delete(Class<?> clazz, String id) {
 		Sql sql = sqlMaker.getDeleteSql(clazz, id);
+		printSql(sql);
 		int result = 0;
 		try {
 			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
@@ -135,6 +146,7 @@ public class CoinDao implements Dao{
 	@Override
 	public int delete(Class<?> clazz, Cnd cnd) {
 		Sql sql = sqlMaker.getDeleteSql(clazz, cnd);
+		printSql(sql);
 		int result = 0;
 		try {
 			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
@@ -147,6 +159,7 @@ public class CoinDao implements Dao{
 	@Override
 	public int delete(Object obj) {
 		Sql sql = sqlMaker.getDeleteSql(obj);
+		printSql(sql);
 		int result = 0;
 		try {
 			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
@@ -159,6 +172,7 @@ public class CoinDao implements Dao{
 	@Override
 	public long count(Class<?> clazz, Cnd cnd) {
 		Sql sql = sqlMaker.getCountSql(clazz, cnd);
+		printSql(sql);
 		long result = 0;
 		try {
 			result =  queryRunner.query(sql.getValue(),
@@ -167,6 +181,10 @@ public class CoinDao implements Dao{
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	private void printSql(Sql sql){
+		logger.info("sql: {} ; params: {}",new Object[]{sql.getValue(),sql.getParams().toArray()});
 	}
 	
 	
