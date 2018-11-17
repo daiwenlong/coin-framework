@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import com.me.coin.framework.dao.impl.CoinDao;
 import com.me.coin.framework.ioc.annotation.IocBean;
 import com.me.coin.framework.util.Strings;
 
@@ -19,6 +19,11 @@ public class CoinIocCache {
 	//存放所有的bean
 	private Map<Class<?>, CoinBean> cache = new HashMap<Class<?>, CoinBean>();
 	
+	public CoinIocCache() {
+		CoinBean dao  = new CoinBean("coinDao", new CoinDao());
+		dao.setInject(true);
+		cache.put(CoinDao.class,dao);
+	}
 	
 	public void addCoinBean(Class<?> clazz){
 		try {
