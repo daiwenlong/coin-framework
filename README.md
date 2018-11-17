@@ -40,7 +40,7 @@ Download项目代码后使用maven install到本地仓库后就可以使用。
    jdbc.password 111111
 ```
 
-### orm
+### 对象映射
 ```java
 @Table("T_USER")//表名
 public class User {
@@ -54,7 +54,7 @@ public class User {
 }
 ```
 
-### mvc
+### 控制层
 
 ```java
 @Act//标识controller
@@ -79,7 +79,7 @@ public class UserController {
 }
 ```
 
-### dao
+### dao操作
 dao在项目启动时已交给ioc管理
 
 使用@Inject即可使用
@@ -105,14 +105,21 @@ dao在项目启动时已交给ioc管理
 ```
 * 删除
 ```java
-    dao.delete(user);
+    dao.delete(user);//删除对象
+	dao.delete(User.class,1);//按主键删除
+	dao.delete(User.class, Cnd.where().and("name", "=", "dwl"));//按条件删除
 ```
 * 更新
 ```java
     dao.update(user);
 ```
+* 统计
+```java
+    int count = dao.count(User.class, Cnd.where());//统计全表
+	int count dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件统计
+```
 
-### ioc
+### 依赖注入
 
 使用@IocBean标记的类将交给ioc管理，由ioc负责创建和注入。
 
