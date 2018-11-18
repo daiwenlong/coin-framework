@@ -103,7 +103,9 @@ User user = dao.fetch(User.class, 1);
 ```
 * 新增
 ```java
-dao.insert(user); 
+int sus = dao.insert(user);//返回执行成功的条数
+long id = dao.insert(user,Long.class);//返回自增主键
+
 ```
 * 删除
 ```java
@@ -117,8 +119,8 @@ dao.update(user);
 ```
 * 统计
 ```java
-int count = dao.count(User.class, Cnd.where());//统计全表
-int count dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件统计
+long count = dao.count(User.class, Cnd.where());//统计全表
+long count = dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件统计
 ```
 
 ### 依赖注入
