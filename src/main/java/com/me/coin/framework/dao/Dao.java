@@ -18,6 +18,16 @@ public interface Dao {
 	 */
 	int insert(Object obj);
 	
+	
+	
+	/**
+	 * 新增 
+	 * @param object
+	 * @param clazz Long.class
+	 * @return 自增主键
+	 */
+	<T> T insert(Object obj,Class<T> clazz);
+	
 	/**
 	 * 更新
 	 * @param obj

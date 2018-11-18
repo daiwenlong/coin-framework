@@ -47,6 +47,22 @@ public class CoinDao implements Dao{
 		}
 		return result;
 	}
+	
+
+	@Override
+	public <T> T insert(Object obj, Class<T> clazz) {
+		Sql sql = sqlMaker.getInsertSql(obj);
+		printSql(sql);
+		T result = null;
+		try {
+			result = queryRunner.insert(sql.getValue(),
+						new ScalarHandler<T>(),sql.getParams().toArray());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 
 	@Override
 	public int update(Object obj) {
@@ -186,7 +202,7 @@ public class CoinDao implements Dao{
 	private void printSql(Sql sql){
 		logger.info("sql: {} ; params: {}",new Object[]{sql.getValue(),sql.getParams().toArray()});
 	}
-	
-	
+
+
 
 }
