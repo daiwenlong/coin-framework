@@ -12,20 +12,38 @@ import com.me.coin.framework.util.PropertyUtils;
  */
 public class DataSourceMaker {
 	
-	private static final String DRIVER = PropertyUtils.getProperty("jdbc.driver");
-	private static final String JDBC_URL = PropertyUtils.getProperty("jdbc.url");
-	private static final String NAME = PropertyUtils.getProperty("jdbc.username");
-	private static final String PASSWORD = PropertyUtils.getProperty("jdbc.password");
+	private final String DRIVER = PropertyUtils.getProperty("jdbc.driver");
+	private final String JDBC_URL = PropertyUtils.getProperty("jdbc.url");
+	private final String NAME = PropertyUtils.getProperty("jdbc.username");
+	private final String PASSWORD = PropertyUtils.getProperty("jdbc.password");
 	
-	private static int INIT_SIZE = Integer.parseInt(PropertyUtils.getProperty("jdbc.initialSize", "10"));
-	private static int MAX_IDLE = Integer.parseInt(PropertyUtils.getProperty("jdbc.maxIdle", "10"));
-	private static int MAX_ACTIVE = Integer.parseInt(PropertyUtils.getProperty("jdbc.maxActive", "20"));
-	private static long MAX_WAIT = Long.parseLong(PropertyUtils.getProperty("jdbc.maxWait", "2000"));
-	private static String VALIDATION_QUERY = PropertyUtils.getProperty("jdbc.validationQuery", "select 1");
+	private final int INIT_SIZE = Integer.parseInt(PropertyUtils.getProperty("jdbc.initialSize", "10"));
+	private final int MAX_IDLE = Integer.parseInt(PropertyUtils.getProperty("jdbc.maxIdle", "10"));
+	private final int MAX_ACTIVE = Integer.parseInt(PropertyUtils.getProperty("jdbc.maxActive", "20"));
+	private final long MAX_WAIT = Long.parseLong(PropertyUtils.getProperty("jdbc.maxWait", "2000"));
+	private final String VALIDATION_QUERY = PropertyUtils.getProperty("jdbc.validationQuery", "select 1");
+	
+	private DataSource dataSource;
+	
+	private static DataSourceMaker maker = null;
 	
 	
+	private DataSourceMaker(){
+		dataSource = init();
+	}
 	
-	public static DataSource getDataSource(){
+	public static DataSourceMaker getInstance(){
+		if(null == maker){
+			synchronized (DataSourceMaker.class) {
+				if(null == maker)
+					maker = new DataSourceMaker();
+			}
+		}
+		return maker;
+	}
+	
+	
+	private DataSource init(){
 		DruidDataSource dataSource = new DruidDataSource();
 		dataSource.setDriverClassName(DRIVER);
 		dataSource.setUrl(JDBC_URL);
@@ -43,6 +61,11 @@ public class DataSourceMaker {
 		dataSource.setTestOnBorrow(true);
 		//恢复连接
 		dataSource.setValidationQuery(VALIDATION_QUERY);
+		return dataSource;
+	}
+	
+	
+	public DataSource getDataSource(){
 		return dataSource;
 	}
 
