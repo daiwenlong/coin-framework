@@ -17,5 +17,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 public @interface Service {
+	
+	String value() default "";
 
 }
