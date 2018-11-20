@@ -1,5 +1,6 @@
 package com.me.coin.framework.dao.impl;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.me.coin.framework.dao.Cnd;
 import com.me.coin.framework.dao.Dao;
 import com.me.coin.framework.dao.DataSourceMaker;
+import com.me.coin.framework.dao.DbHelper;
 import com.me.coin.framework.dao.Pager;
 import com.me.coin.framework.dao.Sql;
 import com.me.coin.framework.dao.SqlMaker;
@@ -30,7 +32,7 @@ public class CoinDao implements Dao{
 	
 	public CoinDao() {
 		sqlMaker = new SqlMaker();
-		queryRunner = new QueryRunner(DataSourceMaker.getDataSource());
+		queryRunner = new QueryRunner(DataSourceMaker.getInstance().getDataSource());
 	}
 	
 	
@@ -41,7 +43,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		int result = 0;
 		try {
-			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.execute(connection, sql.getValue(), sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +58,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		T result = null;
 		try {
-			result = queryRunner.insert(sql.getValue(),
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.insert(connection, sql.getValue(),
 						new ScalarHandler<T>(),sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -70,7 +74,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		int result = 0;
 		try {
-			result = queryRunner.update(sql.getValue(), sql.getParams().toArray());
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.update(connection, sql.getValue(), sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -139,7 +144,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		int result = 0;
 		try {
-			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.execute(connection, sql.getValue(), sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -152,7 +158,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		int result = 0;
 		try {
-			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.execute(connection, sql.getValue(), sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -165,7 +172,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		int result = 0;
 		try {
-			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.execute(connection, sql.getValue(), sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -178,7 +186,8 @@ public class CoinDao implements Dao{
 		printSql(sql);
 		int result = 0;
 		try {
-			result = queryRunner.execute(sql.getValue(), sql.getParams().toArray());
+			Connection connection = DbHelper.getConnection();
+			result = queryRunner.execute(connection, sql.getValue(), sql.getParams().toArray());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
