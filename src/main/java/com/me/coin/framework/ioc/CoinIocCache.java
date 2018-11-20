@@ -7,6 +7,8 @@ import java.util.Map;
 
 import com.me.coin.framework.dao.impl.CoinDao;
 import com.me.coin.framework.ioc.annotation.IocBean;
+import com.me.coin.framework.tx.TransactionProxy;
+import com.me.coin.framework.tx.annotation.Service;
 import com.me.coin.framework.util.Strings;
 
 /**
@@ -25,7 +27,39 @@ public class CoinIocCache {
 		cache.put(CoinDao.class,dao);
 	}
 	
-	public void addCoinBean(Class<?> clazz){
+	/**
+	 * controller类
+	 * @param clazz
+	 */
+	public void addActionBean(Class<?> clazz){
+		try {
+			String name = Strings.lowerFirst(clazz.getSimpleName());
+			cache.put(clazz, new CoinBean(name, clazz.newInstance()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * service类通过动态代理生成
+	 * @param clazz
+	 */
+	public void addServiceBean(Class<?> clazz){
+		Object bean = TransactionProxy.getProxy(clazz);
+		Service service = clazz.getAnnotation(Service.class);
+		String name = service.value();
+		if(Strings.isEmpty(name))
+			name = Strings.lowerFirst(clazz.getSimpleName());
+		cache.put(clazz, new CoinBean(name, bean));
+	}
+	
+	
+	/**
+	 * 普通bean类
+	 * @param clazz
+	 */
+	public void addIocBean(Class<?> clazz){
 		try {
 			IocBean iocBean = clazz.getAnnotation(IocBean.class);
 			String name = iocBean.value();
@@ -36,6 +70,7 @@ public class CoinIocCache {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	
 	public boolean hasCoinBean(Class<?> clazz){

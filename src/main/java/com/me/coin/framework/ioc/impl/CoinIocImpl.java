@@ -14,6 +14,8 @@ import com.me.coin.framework.ioc.CoinIoc;
 import com.me.coin.framework.ioc.CoinIocCache;
 import com.me.coin.framework.ioc.annotation.Inject;
 import com.me.coin.framework.ioc.annotation.IocBean;
+import com.me.coin.framework.mvc.annotation.Act;
+import com.me.coin.framework.tx.annotation.Service;
 import com.me.coin.framework.util.ClassHelper;
 import com.me.coin.framework.util.PropertyUtils;
 import com.me.coin.framework.util.Strings;
@@ -25,14 +27,22 @@ public class CoinIocImpl implements CoinIoc{
 	
 	private static CoinIocCache cache = new CoinIocCache();
 	
-	//初始化ioc容器
+	//初始化ioc容器 controller service 以及一些组件都需要交给ioc
 	static {
 		logger.info("CoinIoc - 初始化开始...");
 		List<Class<?>> classes = ClassHelper.findClassBypackageName(PropertyUtils.getPropertyArray((Constants.IOC_PACKAGE)));
 		classes.forEach(clazz->{
+			if(clazz.isAnnotationPresent(Act.class)){
+				cache.addActionBean(clazz);;
+				logger.info("CoinIoc - 加载controller类：{}",clazz.getName());
+			}
+			if(clazz.isAnnotationPresent(Service.class)){
+				cache.addServiceBean(clazz);
+				logger.info("CoinIoc - 加载service类：{}",clazz.getName());
+			}
 			if(clazz.isAnnotationPresent(IocBean.class)){
-				cache.addCoinBean(clazz);;
-				logger.info("CoinIoc - 加载类：{}",clazz.getName());
+				cache.addIocBean(clazz);
+				logger.info("CoinIoc - 加载组件bean类：{}",clazz.getName());
 			}
 		});
 	}
