@@ -31,7 +31,7 @@ Download项目代码后使用maven install到本地仓库后就可以使用。
 
 在resources下新建一个coin.properties
 ```
-   #ioc扫描的package 多个用","隔开
+   #ioc扫描的package 多个用","隔开,应该包括controller和service
    coinioc_package com.dwl
    #controller所在package 多个用","隔开
    coinact_package com.dwl
@@ -100,9 +100,9 @@ public class UserController {
 		Map<String, Object> data = new HashMap<>();
 		data.put("list", list);
 		//返回jsp视图
-		return new Result(data, View.Jsp,"user/index.jsp");
+		//return new Result(data, View.Jsp,"user/index.jsp");
 		//重定向
-		return new Result(data, View.Redirect,"/user/index");
+		//return new Result(data, View.Redirect,"/user/index");
 		//返回json数据
 		return new Result(data, View.Json);
 		
@@ -162,7 +162,11 @@ long count = dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件�
 
 ### 依赖注入
 
-使用@IocBean标记的类将交给ioc管理，由ioc负责创建和注入。
+使用@Act,@Service,@IocBean标记的类将交给ioc管理，由ioc负责创建和注入。
+
+* @Act controller类
+* @Service service类
+* @IocBean 组件类
 
 ### 事务管理
 
@@ -182,7 +186,6 @@ public class UserServiceImpl implements UserService{
 
 }
 ```
-
 
 ### 切面编程
 
