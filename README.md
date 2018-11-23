@@ -10,7 +10,7 @@
 *  mvc
 *  orm
 *  dao
-*  aop 暂未实现
+*  aop
 *  其他...
 
 ## 使用说明
@@ -164,9 +164,9 @@ long count = dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件�
 
 使用@Act,@Service,@IocBean标记的类将交给ioc管理，由ioc负责创建和注入。
 
-* @Act controller类
-* @Service service类
-* @IocBean 组件类
+* @Act  controller类
+* @Service  service类
+* @IocBean  组件类
 
 ### 事务管理
 
@@ -189,6 +189,39 @@ public class UserServiceImpl implements UserService{
 
 ### 切面编程
 
-...
+使用@Aspect声明切面类，切面也需要交给ioc管理。
+
+支持对同一切入点的多重切面。
+
+* @Aspect(pointCut="")  切面，切入点
+* @Before  前置通知
+* @After  后置通知
+* @Throwing 异常通知
+
+```java
+@IocBean//交给ioc
+@Aspect(pointCut="com.dwl.controller")//切面 pointCut：切入点
+public class AspectT {
+	
+	@Before
+	void start(Method method,Object[] args){
+		System.out.println("前置通知");
+		System.out.println(method.getName());
+	}
+	
+	@After
+	void end(Method method,Object[] args){
+		System.out.println("后置通知");
+	}
+	
+	@Throwing
+	void error(Method method,Object[] args){
+		System.out.println("异常通知");
+	}
+
+}
+
+```
+
 
 
