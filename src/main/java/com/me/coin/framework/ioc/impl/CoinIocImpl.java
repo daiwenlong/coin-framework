@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.me.coin.framework.Constants;
+import com.me.coin.framework.aop.AopCache;
+import com.me.coin.framework.aop.annotation.Aspect;
 import com.me.coin.framework.ioc.BeanNotFoundException;
 import com.me.coin.framework.ioc.CoinBean;
 import com.me.coin.framework.ioc.CoinIoc;
@@ -42,8 +44,13 @@ public class CoinIocImpl implements CoinIoc{
 			}
 			if(clazz.isAnnotationPresent(IocBean.class)){
 				cache.addIocBean(clazz);
+				if(clazz.isAnnotationPresent(Aspect.class))
+					AopCache.add(clazz,cache);
 				logger.info("CoinIoc - 加载组件bean类：{}",clazz.getName());
 			}
+		});
+		AopCache.getProxyClass().forEach(clz->{
+			cache.addAopBean(clz);
 		});
 	}
 

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.me.coin.framework.aop.AopCache;
+import com.me.coin.framework.aop.ProxyChain;
+import com.me.coin.framework.aop.ProxyManager;
 import com.me.coin.framework.dao.impl.CoinDao;
 import com.me.coin.framework.ioc.annotation.IocBean;
 import com.me.coin.framework.tx.TransactionProxy;
@@ -69,6 +72,24 @@ public class CoinIocCache {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * aop切面后的bean
+	 * @param clazz
+	 */
+	public void addAopBean(Class<?> clazz){
+		String name = "";
+		if(clazz.isAnnotationPresent(IocBean.class))
+			name = clazz.getAnnotation(IocBean.class).value();
+		if(clazz.isAnnotationPresent(Service.class))
+			name = clazz.getAnnotation(Service.class).value();
+		ProxyChain chain = AopCache.getChain(clazz);
+		Object bean = ProxyManager.getProxy(clazz, chain);
+		if(Strings.isEmpty(name))
+			name = Strings.lowerFirst(clazz.getSimpleName());
+		cache.put(clazz, new CoinBean(name, bean));
 	}
 	
 	
