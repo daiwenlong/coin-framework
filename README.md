@@ -31,15 +31,48 @@ Download项目代码后使用maven install到本地仓库后就可以使用。
 
 在resources下新建一个coin.properties
 ```
-   #ioc扫描的package 多个用","隔开,应该包括controller和service
+   #ioc扫描的package 多个用","隔开,应该包括controller,service和Aspect
    coinioc_package com.dwl
+   
    #controller所在package 多个用","隔开
    coinact_package com.dwl
+   
    #数据库连接基本信息
    jdbc.driver com.mysql.jdbc.Driver
    jdbc.url jdbc:mysql://localhost:3306/reports?useUnicode=true&characterEncoding=UTF-8
    jdbc.username root
    jdbc.password 111111
+   
+   #静态资源路径 ，不配置时默认webapp下的static文件夹
+   static_path /static/
+   
+   #jsp路径，不配置时默认WEB-INF下的jsp文件夹
+   jsp_path /WEB-INF/jsp/
+   
+```
+
+web.xml配置
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+  <display-name>coin-framework</display-name>
+  <servlet>
+        <servlet-name>coinServlet</servlet-name>
+        <servlet-class>com.me.coin.framework.mvc.DispatchServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+        <servlet-name>coinServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+		<welcome-file>/index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
+
 ```
 
 ### 对象映射
@@ -167,6 +200,7 @@ long count = dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件�
 * @Act  controller类
 * @Service  service类
 * @IocBean  组件类
+* @Inject  需要注入的属性
 
 ### 事务管理
 
