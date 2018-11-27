@@ -32,16 +32,6 @@ public class Pager {
 		this.pageNum = pageNum;
 		this.pageSize = pageSize;
 	}
-
-
-
-	public Pager(int pageNum, int pageSize, long totalRecord, long totalPage) {
-		this.pageNum = pageNum;
-		this.pageSize = pageSize;
-		this.totalRecord = totalRecord;
-		this.totalPage = totalPage;
-	}
-	
 	
 	public int getPageNum() {
 		return pageNum;
