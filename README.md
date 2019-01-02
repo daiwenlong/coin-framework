@@ -249,7 +249,7 @@ public class AspectT {
 	}
 	
 	@Throwing
-	void error(Method method,Object[] args){
+	void error(Method method,Object[] args,Throwable throw){
 		System.out.println("异常通知");
 	}
 

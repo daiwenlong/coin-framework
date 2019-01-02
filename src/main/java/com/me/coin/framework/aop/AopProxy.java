@@ -85,7 +85,7 @@ public class AopProxy {
 			return;
 		try {
 			throwingMethod.setAccessible(true);
-			throwingMethod.invoke(proxy, new Object[]{method,args});
+			throwingMethod.invoke(proxy, new Object[]{method,args,e});
 		} catch (Exception e1) {
 			e.printStackTrace();
 		}
