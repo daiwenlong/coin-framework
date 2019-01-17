@@ -77,12 +77,16 @@ web.xml配置
 
 ### 对象映射
 
+* @Table 表名
+* @Id 主键
+* @Column 字段映射
+
 ```java
-@Table("T_USER")//表名
+@Table("T_USER")
 public class User {
 	
-	@Id//主键
-	@Column("id")//对应数据库字段
+	@Id
+	@Column("id")
 	private String id;
 	
 	@Column("name")
@@ -95,20 +99,23 @@ public class User {
 
 ### 业务层 
 
+* @Service 标识service层
+* @Inject 依赖注入
+
 ```java
-@Service//标识service类
+@Service
 public class UserServiceImpl implements UserService{
 	
-	@Inject//注入
+	@Inject
 	private Dao dao;
 
 	@Override
-	public List<User> getList(Cnd cnd) {
-		return dao.query(User.class, cnd);
+	public List<User> getList(String name) {
+		return dao.query(User.class, Cnd.where().and("name", "=", name));
 	}
 
 	@Override
-	@Transaction//事务管理，不支持事务传播
+	@Transaction
 	public long addUser(User user) {
 	    return dao.insert(user);
 	}
@@ -118,38 +125,71 @@ public class UserServiceImpl implements UserService{
 
 ### 控制层
 
+* @Act 标识控制层
+* @Request 地址映射
+* @Inject 依赖注入
+
 ```java
-@Act//标识controller
-@Request("/user")//地址映射
+@Act
+@Request("/user")
 public class UserController {
 	
-	@Inject//注入
+	@Inject
 	private UserService userService;
 	
+	
+	/**
+	 * 获取执行姓名的用户
+	 * @param name
+	 * @return Result
+	 */
 	@Request("/list")
-	public Result getUsers(){
-		//获取所有用户 -select * from T_USER
-		List<User> list = userService.getList(Cnd.where());
+	public Result getUsers(@Param("name") String name){
+		//获取用户 -select * from T_USER where name = ?
+		List<User> list = userService.getList(name);
 		Map<String, Object> data = new HashMap<>();
 		data.put("list", list);
-		//返回jsp视图
-		//return new Result(data, View.Jsp,"user/index.jsp");
-		//重定向
-		//return new Result(data, View.Redirect,"/user/index");
-		//返回json数据
 		return new Result(data, View.Json);
 		
+	}
+	
+	/**
+	 * 添加用户，返回主键
+	 * @param user
+	 * @return Result
+	 */
+	@Request("/list")
+	public Result addUser(@Entity("user.")User user){
+		long pk = userService.addUser(user);
+		Map<String, Object> data = new HashMap<>();
+		data.put("pk", pk);
+		return new Result(data, View.Json);
 	}
 }
 
 ```
+
+#### 参数映射
+
+* @Param 基本参数类型及其包装类
+* @Entity 对象参数类型
+
+使用@Entity("user.")时，前端传过来的参数user.name,user.age,user.sex都会封装到user对象中。
+
+#### 视图类型
+
+定义了三种基本视图
+
+* View.Json 返回json
+* View.Jsp 返回jsp
+* View.Redirect 重定向
 
 ### dao操作
 dao在项目启动时已交给ioc管理
 
 使用@Inject即可使用
 ```java
-@Inject//注入
+@Inject
 private Dao dao;
 ```
 
@@ -205,15 +245,18 @@ long count = dao.count(User.class, Cnd.where().and("age", ">", 35));//按条件�
 ### 事务管理
 
 事务管理在service层进行，@Transaction与@Service需配合使用才能生效，暂不支持事务传播行为。
+
+* @Transaction 声明式事务管理
+
 ```java
-@Service//标识service类
+@Service
 public class UserServiceImpl implements UserService{
 	
-	@Inject//注入
+	@Inject
 	private Dao dao;
 
 	@Override
-	@Transaction//事务管理，不支持事务传播
+	@Transaction
 	public long addUser(User user) {
 	    return dao.insert(user);
 	}
@@ -233,8 +276,8 @@ public class UserServiceImpl implements UserService{
 * @Throwing 异常通知
 
 ```java
-@IocBean//交给ioc
-@Aspect(pointCut="com.dwl.controller")//切面 pointCut：切入点
+@IocBean
+@Aspect(pointCut="com.dwl.controller")
 public class AspectT {
 	
 	@Before
