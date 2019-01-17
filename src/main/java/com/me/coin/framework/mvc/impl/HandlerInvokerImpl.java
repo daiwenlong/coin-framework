@@ -4,13 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.alibaba.fastjson.JSONObject;
 import com.me.coin.framework.mvc.ActionHandler;
 import com.me.coin.framework.mvc.HandlerInvoker;
 import com.me.coin.framework.mvc.Mvcs;
@@ -86,11 +83,19 @@ public class HandlerInvokerImpl implements HandlerInvoker{
 	 */
 	private Object castParam(Class<?> type, String prefix, HttpServletRequest request){
 		Field[] fields = type.getDeclaredFields();
-		Map<String, Object> map = new HashMap<>();
-		for(Field field:fields){
-			map.put(field.getName(), request.getParameter(prefix+field.getName()));
+		Object object = null;
+		try {
+			object = type.newInstance();
+			for(Field field:fields){
+				field.setAccessible(true);
+				Class<?> fType = field.getType();
+				Object value = castParam(fType, request.getParameter(prefix+field.getName()));
+				field.set(object, value);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return JSONObject.parseObject(JSONObject.toJSONString(map), type);
+		return object;
 	}
 
 }
