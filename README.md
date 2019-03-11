@@ -158,7 +158,7 @@ public class UserController {
 	 * @param user
 	 * @return Result
 	 */
-	@Request("/list")
+	@Request("/add")
 	public Result addUser(@Entity("user.")User user){
 		long pk = userService.addUser(user);
 		Map<String, Object> data = new HashMap<>();
